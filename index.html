@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="main">
+
+        <div class="login">
+            <h1>Login Page</h1>
+            <input type="text" id="username" placeholder="login id" class="textBox">
+            <input type="text" id="password" placeholder="Password" class="textBox">
+            <button class="btn"><p>Submit</p></button>
+
+        </div>
+    </div>
+    <script>
+        var btn = document.querySelector(".btn")
+
+        btn.addEventListener("click", function () {
+            var username = document.getElementById("username").value
+            var password = document.getElementById("password").value
+            if (username && password) {
+                if (username == "test@sunbasedata.com" && password == "Test@123") {
+                    open("./customerList.html")
+                    // username.value = ""
+                    // password.value = ""
+                } else {
+                    alert("Wrong Username or password")
+                }
+            } else {
+                alert("Enter all values")
+            }
+        })
+    </script>
+</body>
+
+</html>

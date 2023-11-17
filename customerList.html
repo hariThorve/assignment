@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer List</title>
+    <style>
+        body {
+            background-image: url("./planebg.jpg");
+            background-size: cover;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            margin-top: 20px;
+        }
+
+        table,
+        th,
+        td {
+            color: beige;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            border: 1px solid rgb(121, 167, 163);
+            border-radius: 8px;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        .action-buttons {
+            margin-top: 10px;
+        }
+        #dataForm{
+            height: 50%;
+            /* position: fixed; */
+            display: flex;
+            flex-direction: column;
+            /* border: black solid 1px; */
+            justify-content: center;
+            align-items: center;
+        }
+        .holder {
+            padding: 20px;
+            height: 50%;
+            width:30%;
+            /* position: fixed; */
+            display: flex;
+            flex-direction: column;
+            border: rgb(21, 180, 132)solid 1px;
+            border-radius: 8px;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #dataForm label {
+            font-size: larger;
+        }
+
+        #dataForm input {
+            height: 35%;
+            width: 50%;
+        }
+
+        #dataForm button {
+            height: 50px;
+            width: 30%;
+            border: blue;
+            background-color: lightblue;
+            border-radius: 8px;
+        }
+
+        #dataForm button:hover {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <form id="dataForm">
+        <div class="holder">
+            <label for="firstname">First Name:</label>
+            <input type="text" id="firstname" name="firstname" required>
+
+            <label for="lastname">Last Name:</label>
+            <input type="text" id="lastname" name="lastname" required>
+
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" required>
+
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" required>
+
+            <label for="state">State:</label>
+            <input type="text" id="state" name="state" required>
+
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Phone:</label>
+            <input type="number" id="phone" name="phone" required>
+
+            <button type="button" onclick="addData()">Add to Table</button>
+        </div>
+
+    </form>
+
+    
+
+    <table id="dataTable">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Action</th>
+        </tr>
+    </table>
+
+    <div class="action-buttons">
+        <button onclick="deleteSelected()">Delete Selected</button>
+        <button onclick="updateSelected()">Update Selected</button>
+    </div>
+
+    <script>
+        
+        window.onload = function () {
+            loadTableData();
+        }
+        function addData() {
+            if (firstname != "" || lastname != "" || address != "" || city != "" || state != "" || email != "" || phone != "") {
+                var firstname = document.getElementById('firstname').value;
+                var lastname = document.getElementById('lastname').value;
+                var address = document.getElementById('address').value;
+                var city = document.getElementById('city').value;
+                var state = document.getElementById('state').value;
+                var email = document.getElementById('email').value;
+                var phone = document.getElementById('phone').value;
+
+                var table = document.getElementById('dataTable');
+                var newRow = table.insertRow(table.rows.length);
+
+                var cell1 = newRow.insertCell(0);
+                var cell2 = newRow.insertCell(1);
+                var cell3 = newRow.insertCell(2);
+                var cell4 = newRow.insertCell(3);
+                var cell5 = newRow.insertCell(4);
+                var cell6 = newRow.insertCell(5);
+                var cell7 = newRow.insertCell(6);
+                var cell8 = newRow.insertCell(7);
+
+                cell1.innerHTML = firstname;
+                cell2.innerHTML = lastname;
+                cell3.innerHTML = address;
+                cell4.innerHTML = city;
+                cell5.innerHTML = state;
+                cell6.innerHTML = email;
+                cell7.innerHTML = phone;
+                cell8.innerHTML = '<input type="checkbox" class="checkbox">';
+
+                saveToLocalStorage(firstname, lastname, address, city, state, email, phone);
+
+                document.getElementById('dataForm').reset();
+            } else {
+                alert("Fill all the details")
+            }
+
+        }
+
+        function saveToLocalStorage(firstname, lastname, address, city, state, email, phone) {
+            var existingData = JSON.parse(localStorage.getItem('tableData')) || [];
+            existingData.push({ firstname: firstname, lastname: lastname, address: address, city: city, state: state, email: email, phone: phone });
+            localStorage.setItem('tableData', JSON.stringify(existingData));
+        }
+
+        function loadTableData() {
+            var existingData = JSON.parse(localStorage.getItem('tableData')) || [];
+
+            var table = document.getElementById('dataTable');
+            existingData.forEach(function (data) {
+                var newRow = table.insertRow(table.rows.length);
+                var cell1 = newRow.insertCell(0);
+                var cell2 = newRow.insertCell(1);
+                var cell3 = newRow.insertCell(2);
+                var cell4 = newRow.insertCell(3);
+                var cell5 = newRow.insertCell(4);
+                var cell6 = newRow.insertCell(5);
+                var cell7 = newRow.insertCell(6);
+                var cell8 = newRow.insertCell(7);
+
+                cell1.innerHTML = data.firstname;
+                cell2.innerHTML = data.lastname;
+                cell3.innerHTML = data.address;
+                cell4.innerHTML = data.city;
+                cell5.innerHTML = data.state;
+                cell6.innerHTML = data.email;
+                cell7.innerHTML = data.phone;
+                cell8.innerHTML = '<input type="checkbox" class="checkbox">';
+            });
+        }
+
+        function deleteSelected() {
+            var table = document.getElementById('dataTable');
+            var checkboxes = table.getElementsByClassName('checkbox');
+
+            for (var i = checkboxes.length - 1; i >= 0; i--) {
+                if (checkboxes[i].checked) {
+                    table.deleteRow(i + 1); // Account for the header row
+                    deleteFromLocalStorage(i);
+                }
+            }
+        }
+
+        function deleteFromLocalStorage(index) {
+            var existingData = JSON.parse(localStorage.getItem('tableData')) || [];
+            existingData.splice(index, 1);
+            localStorage.setItem('tableData', JSON.stringify(existingData));
+        }
+
+        function updateSelected() {
+            var table = document.getElementById('dataTable');
+            var checkboxes = table.getElementsByClassName('checkbox');
+
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    var firstname = prompt('Enter updated First name:');
+                    var lastname = prompt('Enter updated Last name:');
+                    var address = prompt('Enter updated address:');
+                    var city = prompt('Enter updated city:');
+                    var state = prompt('Enter updated state:');
+                    var email = prompt('Enter updated email:');
+                    var phone = prompt('Enter updated phone:');
+
+                    var row = table.rows[i + 1]; 
+                    row.cells[0].innerHTML = firstname;
+                    row.cells[1].innerHTML = lastname;
+                    row.cells[2].innerHTML = address;
+                    row.cells[3].innerHTML = city;
+                    row.cells[4].innerHTML = state;
+                    row.cells[5].innerHTML = email;
+                    row.cells[6].innerHTML = phone;
+
+
+                    updateLocalStorage(i, firstname, age, email);
+                }
+            }
+        }
+
+        function updateLocalStorage(index, firstname, lastname, address, city, state, email, phone) {
+            var existingData = JSON.parse(localStorage.getItem('tableData')) || [];
+            existingData[index] = { firstname: firstname, lastname: lastname, address: address, city: city, state: state, email: email, phone: phone };
+            localStorage.setItem('tableData', JSON.stringify(existingData));
+        }
+
+
+        function loadTableData() {
+            var existingData = JSON.parse(localStorage.getItem('tableData')) || [];
+
+            var table = document.getElementById('dataTable');
+            existingData.forEach(function (data) {
+                var newRow = table.insertRow(table.rows.length);
+                var cell1 = newRow.insertCell(0);
+                var cell2 = newRow.insertCell(1);
+                var cell3 = newRow.insertCell(2);
+                var cell4 = newRow.insertCell(3);
+                var cell5 = newRow.insertCell(4);
+                var cell6 = newRow.insertCell(5);
+                var cell7 = newRow.insertCell(6);
+                var cell8 = newRow.insertCell(7);
+
+                cell1.innerHTML = data.firstname;
+                cell2.innerHTML = data.lastname;
+                cell3.innerHTML = data.address;
+                cell4.innerHTML = data.city;
+                cell5.innerHTML = data.state;
+                cell6.innerHTML = data.email;
+                cell7.innerHTML = data.phone;
+                cell8.innerHTML = '<input type="checkbox" class="checkbox">';
+            });
+        }
+    </script>
+
+</body>
+
+</html>
